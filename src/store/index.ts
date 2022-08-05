@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import { IBlankSpace } from "@/engiene";
 
 export enum flagsEnum {
   SUM = "sum",
@@ -18,7 +19,7 @@ export default createStore({
       [flagsEnum.POW]: true,
     },
     difficulty: 5,
-    currentNumbers: [] as Array<number>,
+    currentNumbers: [] as Array<IBlankSpace>,
     currentOperators: [] as Array<string>,
     currentAnswer: [] as Array<number>,
   },
@@ -30,7 +31,7 @@ export default createStore({
     updateDifficulty(state, difficulty: number) {
       state.difficulty = difficulty;
     },
-    updateNumbers(state, numArr: Array<number>) {
+    updateNumbers(state, numArr: Array<IBlankSpace>) {
       state.currentNumbers = numArr;
     },
     updateOperators(state, numOpr: Array<string>) {

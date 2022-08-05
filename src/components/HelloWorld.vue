@@ -39,12 +39,17 @@ function numberUpdater() {
 // }
 
 function testFunc() {
-  console.log(calcRecurse());
+  console.log(calcRecurse().value);
 }
 
 function calcRecurse() {
   let result = calc();
-  if (result < 0 || result.toString().includes(".") || !isFinite(result)) {
+  if (
+    result.value < 0 ||
+    result.value.toString().includes(".") ||
+    !isFinite(result.value) ||
+    result.value > 100000
+  ) {
     result = calcRecurse();
   }
   return result;

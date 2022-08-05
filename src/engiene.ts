@@ -1,5 +1,10 @@
 import { flagsEnum, IFlags } from "@/store";
 
+export interface IBlankSpace {
+  id: number;
+  value: number;
+}
+
 const operatorsMap = {
   [flagsEnum.SUM]: "+",
   [flagsEnum.SUBSTR]: "-",
@@ -10,10 +15,13 @@ const operatorsMap = {
 
 class Engine {
   numbersGenerator(amount: number) {
-    const numbersArray = [];
+    const numbersArray = [] as Array<IBlankSpace>;
     for (let i = 0; i <= amount; i++) {
-      const randomNum = Math.floor(Math.random() * 10);
-      numbersArray.push(randomNum);
+      const randomNum = Math.floor(Math.random() * 100);
+      numbersArray.push({
+        id: i,
+        value: randomNum,
+      });
     }
     console.log(numbersArray);
     return numbersArray;
@@ -44,19 +52,37 @@ class Engine {
     return availableOperators;
   }
 
-  calculateResult(numbersArray: Array<number>, operatorsArray: Array<string>) {
+  calculateResult(
+    numbersArray: Array<IBlankSpace>,
+    operatorsArray: Array<string>
+  ) {
     return numbersArray.reduce((previousValue, currentValue, currentIndex) => {
       switch (operatorsArray[currentIndex - 1]) {
         case "+":
-          return previousValue + currentValue;
+          return {
+            id: -100,
+            value: previousValue.value + currentValue.value,
+          };
         case "-":
-          return previousValue - currentValue;
+          return {
+            id: -100,
+            value: previousValue.value - currentValue.value,
+          };
         case "/":
-          return previousValue / currentValue;
+          return {
+            id: -100,
+            value: previousValue.value / currentValue.value,
+          };
         case "*":
-          return previousValue * currentValue;
+          return {
+            id: -100,
+            value: previousValue.value * currentValue.value,
+          };
         case "^":
-          return previousValue ** currentValue;
+          return {
+            id: -100,
+            value: previousValue.value ** currentValue.value,
+          };
         default:
           return previousValue;
       }
