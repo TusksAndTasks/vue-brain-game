@@ -6,7 +6,8 @@
     @change="flagsUpdater(flag)"
     :key="flag"
   />
-  <button @click="testFunc"></button>
+  <input :value="store.state.difficulty" @change="difficultyUpdater" />
+  <button @click="logResult">Run</button>
 </template>
 
 <script setup lang="ts">
@@ -14,49 +15,50 @@ import { test } from "@/engiene";
 import store, { flagsEnum } from "@/store";
 
 function flagsUpdater(flag: flagsEnum) {
-  store.commit("updateFlags", flag);
+  store.commit("updateState", {
+    key: "flags",
+    value: { ...store.state.flags, [flag]: !store.state.flags[flag] },
+  });
 }
 
 function difficultyUpdater(e: Event) {
-  store.commit("updateDifficulty", +(e.target as HTMLInputElement).value);
+  store.commit("updateState", {
+    key: "difficulty",
+    value: +(e.target as HTMLInputElement).value,
+  });
 }
 
 function operatorsUpdater() {
-  const operators = test.operatorsGenerator(
+  const operators = test.generateOperators(
     store.state.flags,
     store.state.difficulty
   );
-  store.commit("updateOperators", operators);
+  store.commit("updateState", { key: "currentOperators", value: operators });
 }
 
 function numberUpdater() {
-  const numbers = test.numbersGenerator(store.state.difficulty);
-  store.commit("updateNumbers", numbers);
+  operatorsUpdater();
+
+  const numbers = test.generateNumbers(
+    store.state.difficulty,
+    store.state.currentOperators
+  );
+  store.commit("updateState", { key: "currentNumbers", value: numbers });
 }
 
-// function answerUpdater() {
-//
-// }
-
-function testFunc() {
+function logResult() {
   console.log(calcRecurse().value);
 }
 
 function calcRecurse() {
   let result = calc();
-  if (
-    result.value < 0 ||
-    result.value.toString().includes(".") ||
-    !isFinite(result.value) ||
-    result.value > 100000
-  ) {
+  if (result.value.toString().includes(".") || result.value > 100000) {
     result = calcRecurse();
   }
   return result;
 }
 
 function calc() {
-  operatorsUpdater();
   numberUpdater();
 
   return test.calculateResult(
