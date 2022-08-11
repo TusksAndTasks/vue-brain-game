@@ -1,5 +1,13 @@
-import { flagsEnum, FlagsType } from "@/store";
+import { FlagsType } from "@/store";
 import declareAvailableOperators from "@/utils/declareAvailableOperators";
+
+export enum flagsEnum {
+  SUM = "SUM",
+  SUBSTR = "SUBSTR",
+  MUL = "MUL",
+  DIV = "DIV",
+  POW = "POW",
+}
 
 export interface INumberField {
   id: number;
