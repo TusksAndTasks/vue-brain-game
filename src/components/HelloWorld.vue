@@ -37,8 +37,6 @@ function operatorsUpdater() {
 }
 
 function numberUpdater() {
-  operatorsUpdater();
-
   const numbers = test.generateNumbers(
     store.state.difficulty,
     store.state.currentOperators
@@ -47,18 +45,21 @@ function numberUpdater() {
 }
 
 function logResult() {
-  console.log(calcRecurse().value);
+  if (store.getters.getActiveFlagsAmount < 2 && store.state.difficulty > 3) {
+    return;
+  } else console.log(calcRecurse().value);
 }
 
 function calcRecurse() {
   let result = calc();
-  if (result.value.toString().includes(".") || result.value > 100000) {
+  if (result.value > 1000000 || result.value === 1) {
     result = calcRecurse();
   }
   return result;
 }
 
 function calc() {
+  operatorsUpdater();
   numberUpdater();
 
   return test.calculateResult(

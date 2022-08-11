@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import { INumberField } from "@/engiene";
+import { INumberField, test } from "@/engiene";
 
 export enum flagsEnum {
   SUM = "SUM",
@@ -35,7 +35,11 @@ export default createStore({
     currentOperators: [] as Array<string>,
     currentAnswer: [] as Array<number>,
   },
-  getters: {},
+  getters: {
+    getActiveFlagsAmount(state) {
+      return test.declareAvailableOperators(state.flags).length;
+    },
+  },
   mutations: {
     updateState<STATE extends IState, KEY extends keyof STATE>(
       state: STATE,
