@@ -8,10 +8,12 @@
   />
   <input :value="store.state.difficulty" @change="difficultyUpdater" />
   <button @click="logResult">Run</button>
+  <p>{{ store.state.currentNumbers.toString() }}</p>
+  <p>{{ store.state.currentOperators.toString() }}</p>
 </template>
 
 <script setup lang="ts">
-import { test } from "@/engiene";
+import { engine } from "@/engiene";
 import store, { flagsEnum } from "@/store";
 
 function flagsUpdater(flag: flagsEnum) {
@@ -29,15 +31,15 @@ function difficultyUpdater(e: Event) {
 }
 
 function operatorsUpdater() {
-  const operators = test.generateOperators(
+  const operators = engine.generateOperators(
     store.state.flags,
     store.state.difficulty
   );
   store.commit("updateState", { key: "currentOperators", value: operators });
 }
 
-function numberUpdater() {
-  const numbers = test.generateNumbers(
+function numbersUpdater() {
+  const numbers = engine.generateNumbers(
     store.state.difficulty,
     store.state.currentOperators
   );
@@ -47,12 +49,12 @@ function numberUpdater() {
 function logResult() {
   if (store.getters.getActiveFlagsAmount < 2 && store.state.difficulty > 3) {
     return;
-  } else console.log(calcRecurse().value);
+  } else console.log(calcRecurse());
 }
 
 function calcRecurse() {
   let result = calc();
-  if (result.value > 1000000 || result.value === 1) {
+  if (result > 1000000 || result === 1) {
     result = calcRecurse();
   }
   return result;
@@ -60,9 +62,9 @@ function calcRecurse() {
 
 function calc() {
   operatorsUpdater();
-  numberUpdater();
+  numbersUpdater();
 
-  return test.calculateResult(
+  return engine.calculateResult(
     store.state.currentNumbers,
     store.state.currentOperators
   );

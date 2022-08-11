@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
-import { INumberField, test } from "@/engiene";
+import declareAvailableOperators from "@/utils/declareAvailableOperators";
+import { operatorsType } from "@/engiene";
 
 export enum flagsEnum {
   SUM = "SUM",
@@ -16,7 +17,7 @@ export type FlagsType = {
 interface IState {
   flags: FlagsType;
   difficulty: number;
-  currentNumbers: Array<INumberField>;
+  currentNumbers: Array<number>;
   currentOperators: Array<string>;
   currentAnswer: Array<number>;
 }
@@ -31,13 +32,13 @@ export default createStore({
       [flagsEnum.POW]: true,
     },
     difficulty: 10,
-    currentNumbers: [] as Array<INumberField>,
-    currentOperators: [] as Array<string>,
+    currentNumbers: [] as Array<number>,
+    currentOperators: [] as Array<operatorsType>,
     currentAnswer: [] as Array<number>,
   },
   getters: {
     getActiveFlagsAmount(state) {
-      return test.declareAvailableOperators(state.flags).length;
+      return declareAvailableOperators(state.flags).length;
     },
   },
   mutations: {

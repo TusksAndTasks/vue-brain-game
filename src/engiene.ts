@@ -1,11 +1,19 @@
 import { flagsEnum, FlagsType } from "@/store";
+import declareAvailableOperators from "@/utils/declareAvailableOperators";
 
 export interface INumberField {
   id: number;
   value: number;
 }
 
-const operatorsMap = {
+interface ICaps {
+  upperCap: number;
+  lowerCap: number;
+}
+
+export type operatorsType = "+" | "-" | "/" | "*" | "^";
+
+export const operatorsMap: Record<flagsEnum, operatorsType> = {
   [flagsEnum.SUM]: "+",
   [flagsEnum.SUBSTR]: "-",
   [flagsEnum.MUL]: "*",
@@ -14,66 +22,73 @@ const operatorsMap = {
 };
 
 const functionsMap = {
-  [operatorsMap[flagsEnum.SUM]]: (firstNum: number, secondNum: number) => ({
-    id: -100,
-    value: firstNum + secondNum,
-  }),
-  [operatorsMap[flagsEnum.SUBSTR]]: (firstNum: number, secondNum: number) => ({
-    id: -100,
-    value: firstNum - secondNum,
-  }),
-  [operatorsMap[flagsEnum.MUL]]: (firstNum: number, secondNum: number) => ({
-    id: -100,
-    value: firstNum * secondNum,
-  }),
-  [operatorsMap[flagsEnum.DIV]]: (firstNum: number, secondNum: number) => ({
-    id: -100,
-    value: firstNum / secondNum,
-  }),
-  [operatorsMap[flagsEnum.POW]]: (firstNum: number, secondNum: number) => ({
-    id: -100,
-    value: firstNum ** secondNum,
-  }),
+  [operatorsMap[flagsEnum.SUM]]: (firstNum: number, secondNum: number) =>
+    firstNum + secondNum,
+  [operatorsMap[flagsEnum.SUBSTR]]: (firstNum: number, secondNum: number) =>
+    firstNum - secondNum,
+  [operatorsMap[flagsEnum.MUL]]: (firstNum: number, secondNum: number) =>
+    firstNum * secondNum,
+  [operatorsMap[flagsEnum.DIV]]: (firstNum: number, secondNum: number) =>
+    firstNum / secondNum,
+  [operatorsMap[flagsEnum.POW]]: (firstNum: number, secondNum: number) =>
+    firstNum ** secondNum,
 };
 
 class Engine {
-  generateNumbers(amount: number, operators: Array<string>) {
-    const startField = {
-      id: 1,
-      value:
-        operators[0] === operatorsMap[flagsEnum.DIV]
-          ? Engine.#generateNotAPrimeNumber(100, 10)
-          : Engine.#generateRandomNumber(20, 1),
+  constructor() {
+    this.currentResult = 0;
+    this.numbersCreatorsMap = {
+      [operatorsMap[flagsEnum.SUM]]: ({ upperCap, lowerCap }: ICaps) =>
+        Engine.#generateRandomNumber(upperCap, lowerCap),
+      [operatorsMap[flagsEnum.SUBSTR]]: ({ upperCap, lowerCap }: ICaps) =>
+        Engine.#generateRandomNumber(upperCap, lowerCap),
+      [operatorsMap[flagsEnum.MUL]]: ({ upperCap, lowerCap }: ICaps) =>
+        Engine.#generateRandomNumber(upperCap, lowerCap),
+      [operatorsMap[flagsEnum.DIV]]: ({ upperCap, lowerCap }: ICaps) =>
+        this.#generateDividableNumber(upperCap, lowerCap, this.currentResult),
+      [operatorsMap[flagsEnum.POW]]: ({ upperCap, lowerCap }: ICaps) => {
+        return this.currentResult < 1000000000
+          ? Engine.#generateRandomNumber(upperCap, lowerCap)
+          : 0;
+      },
     };
-    const numbersArray = [startField] as Array<INumberField>;
+    this.numbersCapsMap = {
+      [operatorsMap[flagsEnum.SUM]]: { upperCap: 10, lowerCap: 0 },
+      [operatorsMap[flagsEnum.SUBSTR]]: { upperCap: 10, lowerCap: 0 },
+      [operatorsMap[flagsEnum.MUL]]: { upperCap: 10, lowerCap: 1 },
+      [operatorsMap[flagsEnum.DIV]]: { upperCap: 11, lowerCap: 3 },
+      [operatorsMap[flagsEnum.POW]]: { upperCap: 4, lowerCap: 1 },
+    };
+  }
 
-    let currentResult = startField.value;
+  currentResult: number;
+  numbersCreatorsMap: Record<string, (args: ICaps) => number>;
+  numbersCapsMap: Record<string, ICaps>;
+
+  generateNumbers(amount: number, operators: Array<operatorsType>) {
+    const startNumber =
+      operators[0] === operatorsMap[flagsEnum.DIV]
+        ? Engine.#generateNotAPrimeNumber(100, 10)
+        : Engine.#generateRandomNumber(20, 1);
+    const numbersArray = [startNumber];
+
+    this.currentResult = startNumber;
 
     for (let i = 1; i <= amount; i++) {
-      let number: number;
+      const currentOperator = operators[i - 1];
+      const createNewNumber = (operator: operatorsType) => {
+        return this.numbersCreatorsMap[operator](this.numbersCapsMap[operator]);
+      };
+      const newNumber = createNewNumber(currentOperator);
 
-      if (operators[i - 1] === operatorsMap[flagsEnum.DIV]) {
-        number = this.#generateDividableNumber(currentResult);
-      } else if (operators[i - 1] === operatorsMap[flagsEnum.POW]) {
-        number =
-          currentResult < 1000000000 ? Engine.#generateRandomNumber(4, 1) : 0;
-      } else if (operators[i - 1] === operatorsMap[flagsEnum.MUL]) {
-        number = Engine.#generateRandomNumber(10, 1);
-      } else {
-        number = Engine.#generateRandomNumber(10, 0);
-      }
+      this.currentResult = functionsMap[currentOperator](
+        this.currentResult,
+        newNumber
+      );
 
-      currentResult = functionsMap[operators[i - 1]](
-        currentResult,
-        number
-      ).value;
-
-      numbersArray.push({
-        id: i + 1,
-        value: number,
-      });
+      numbersArray.push(newNumber);
     }
-    console.log(numbersArray);
+
     return numbersArray;
   }
 
@@ -89,62 +104,49 @@ class Engine {
     return num > 1;
   }
 
-  #generateDividableNumber(currentResult: number): number {
-    const number = Engine.#generateRandomNumber(
-      11,
-      Engine.#generateRandomNumber(3, 1)
-    );
-    if (currentResult % number === 0) {
-      return number;
-    } else {
-      return this.#generateDividableNumber(currentResult);
-    }
-  }
-
   static #generateRandomNumber(upperCap: number, lowerCap = 0) {
     return Math.floor(Math.random() * (upperCap - lowerCap) + lowerCap);
   }
 
-  generateOperators(flags: FlagsType, amount: number) {
-    const availableOperators = this.declareAvailableOperators(flags);
+  #generateDividableNumber(
+    upperCap: number,
+    lowerFloatingCap: number,
+    currentResult: number
+  ): number {
+    const lowerCap = Engine.#generateRandomNumber(lowerFloatingCap, 1);
+    const number = Engine.#generateRandomNumber(upperCap, lowerCap);
 
-    if (availableOperators.length <= 1 && amount > 3) {
-      return;
+    if (currentResult % number === 0) {
+      return number;
     }
+    return this.#generateDividableNumber(
+      upperCap,
+      lowerFloatingCap,
+      currentResult
+    );
+  }
 
+  generateOperators(flags: FlagsType, amount: number) {
+    const availableOperators = declareAvailableOperators(flags);
     const operatorsArray = [];
 
     for (let i = 0; i < amount; i++) {
-      operatorsArray.push(
-        availableOperators[
-          Engine.#generateRandomNumber(availableOperators.length)
-        ]
+      const randomOperatorIndex = Engine.#generateRandomNumber(
+        availableOperators.length
       );
+      operatorsArray.push(availableOperators[randomOperatorIndex]);
     }
-    console.log(operatorsArray);
+
     return operatorsArray;
   }
 
-  declareAvailableOperators(flags: FlagsType) {
-    const availableOperators = [] as Array<string>;
-    Object.entries(flags).forEach(([flag, value]) => {
-      if (value) {
-        availableOperators.push(operatorsMap[flag as keyof FlagsType]);
-      }
-    });
-    return availableOperators;
-  }
-
-  calculateResult(
-    numbersArray: Array<INumberField>,
-    operatorsArray: Array<string>
-  ) {
+  calculateResult(numbersArray: Array<number>, operatorsArray: Array<string>) {
     return numbersArray.reduce((previousValue, currentValue, currentIndex) => {
       const currentOperator = operatorsArray[currentIndex - 1];
       const currentOperation = functionsMap[currentOperator];
-      return currentOperation(previousValue.value, currentValue.value);
+      return currentOperation(previousValue, currentValue);
     });
   }
 }
 
-export const test = new Engine();
+export const engine = new Engine();
