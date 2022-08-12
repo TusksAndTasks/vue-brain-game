@@ -6,12 +6,20 @@ export type FlagsType = {
   [key in flagsEnum]: boolean;
 };
 
+export interface IGameField {
+  id: number;
+  value: string;
+  inputValue?: string;
+}
+
 interface IState {
   flags: FlagsType;
   difficulty: number;
   currentNumbers: Array<number>;
   currentOperators: Array<string>;
-  currentAnswer: number | null;
+  currentAnswer: number;
+  currentFields: Array<IGameField>;
+  isCurrentSolutionCorrect: boolean;
 }
 
 export default createStore({
@@ -26,7 +34,9 @@ export default createStore({
     difficulty: 10,
     currentNumbers: [] as Array<number>,
     currentOperators: [] as Array<operatorsType>,
-    currentAnswer: null,
+    currentAnswer: 0,
+    currentFields: [] as Array<IGameField>,
+    isCurrentSolutionCorrect: false,
   },
   getters: {
     getActiveFlagsAmount(state) {
