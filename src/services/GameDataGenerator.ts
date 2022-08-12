@@ -28,7 +28,7 @@ class GameDataGenerator {
     store.commit("updateGameState", { key: "currentAnswer", value: answer });
   }
 
-  logResult() {
+  generateGameConditions() {
     if (
       declareAvailableOperators(store.state.settings.flags).length < 2 &&
       store.state.settings.difficulty > 3
