@@ -9,11 +9,6 @@ export enum flagsEnum {
   POW = "POW",
 }
 
-export interface INumberField {
-  id: number;
-  value: number;
-}
-
 interface ICaps {
   upperCap: number;
   lowerCap: number;

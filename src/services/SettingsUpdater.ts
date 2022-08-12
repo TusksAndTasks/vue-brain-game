@@ -3,16 +3,21 @@ import store from "@/store";
 
 class SettingsUpdater {
   flagsUpdater(flag: flagsEnum) {
-    store.commit("updateState", {
-      key: "flags",
-      value: { ...store.state.flags, [flag]: !store.state.flags[flag] },
-    });
+    return () => {
+      store.commit("updateSettingsState", {
+        key: "flags",
+        value: {
+          ...store.state.settings.flags,
+          [flag]: !store.state.settings.flags[flag],
+        },
+      });
+    };
   }
 
-  difficultyUpdater(e: Event) {
-    store.commit("updateState", {
-      key: "difficulty",
-      value: +(e.target as HTMLInputElement).value,
+  rangesUpdater(newValue?: number, keyword?: string) {
+    store.commit("updateSettingsState", {
+      key: keyword,
+      value: newValue,
     });
   }
 }

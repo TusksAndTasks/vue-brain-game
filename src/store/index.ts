@@ -1,6 +1,13 @@
 import { createStore } from "vuex";
 import declareAvailableOperators from "@/utils/declareAvailableOperators";
-import { flagsEnum, operatorsType } from "@/engiene";
+import { flagsEnum } from "@/engiene";
+import settings, { ISettingsState } from "@/store/settings";
+import game, { IGameState } from "@/store/game";
+
+interface IStore {
+  settings: ISettingsState;
+  game: IGameState;
+}
 
 export type FlagsType = {
   [key in flagsEnum]: boolean;
@@ -12,45 +19,20 @@ export interface IGameField {
   inputValue?: string;
 }
 
-interface IState {
-  flags: FlagsType;
-  difficulty: number;
-  currentNumbers: Array<number>;
-  currentOperators: Array<string>;
-  currentAnswer: number;
-  currentFields: Array<IGameField>;
-  isCurrentSolutionCorrect: boolean;
-}
-
-export default createStore({
-  state: {
-    flags: {
-      [flagsEnum.SUM]: true,
-      [flagsEnum.SUBSTR]: true,
-      [flagsEnum.MUL]: true,
-      [flagsEnum.DIV]: true,
-      [flagsEnum.POW]: true,
-    },
-    difficulty: 10,
-    currentNumbers: [] as Array<number>,
-    currentOperators: [] as Array<operatorsType>,
-    currentAnswer: 0,
-    currentFields: [] as Array<IGameField>,
-    isCurrentSolutionCorrect: false,
-  },
+export default createStore<IStore>({
+  state: {} as IStore,
   getters: {
-    getActiveFlagsAmount(state) {
-      return declareAvailableOperators(state.flags).length;
+    getActiveFlagsAmount() {
+      return declareAvailableOperators(settings.state.flags).length;
     },
   },
   mutations: {
-    updateState<STATE extends IState, KEY extends keyof STATE>(
+    updateState<STATE extends IStore, KEY extends keyof STATE>(
       state: STATE,
       payload: { key: KEY; value: STATE[KEY] }
     ) {
       state[payload.key] = payload.value;
     },
   },
-  actions: {},
-  modules: {},
+  modules: { settings, game },
 });
