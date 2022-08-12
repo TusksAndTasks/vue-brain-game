@@ -3,10 +3,12 @@ import declareAvailableOperators from "@/utils/declareAvailableOperators";
 import { flagsEnum } from "@/engiene";
 import settings, { ISettingsState } from "@/store/settings";
 import game, { IGameState } from "@/store/game";
+import timer, { ITimeState } from "@/store/timer";
 
 interface IStore {
   settings: ISettingsState;
   game: IGameState;
+  timer: ITimeState;
 }
 
 export type FlagsType = {
@@ -28,5 +30,5 @@ export default createStore<IStore>({
       }
     },
   },
-  modules: { settings, game },
+  modules: { settings, game, timer },
 });

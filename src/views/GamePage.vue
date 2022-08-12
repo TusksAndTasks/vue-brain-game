@@ -1,4 +1,5 @@
 <template>
+  <p>{{ store.state.timer.time }}</p>
   <div v-for="field in store.state.game.currentFields" :key="field.id">
     <p v-if="field.id === 0 || field.id % 2 !== 0 || isShown">
       {{ field.value }}
@@ -26,10 +27,21 @@
 <script setup lang="ts">
 import store from "@/store";
 import { gameDataGenerator } from "@/services/GameDataGenerator";
-import { ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import { fieldsManager } from "@/services/FieldManager";
 import ModalPrimitive from "@/primitives/ModalPrimitive.vue";
+import { timer } from "@/utils/Timer";
+import { timerManager } from "@/services/TimerManager";
 
+onMounted(() =>
+  timer.startTimer(store.state.settings.timer, (time: string) => {
+    timerManager.updateTime(time);
+  })
+);
+onBeforeUnmount(() => {
+  timer.stopTimer();
+  timerManager.updateTime("0");
+});
 gameDataGenerator.generateGameConditions();
 function handleCheck() {
   fieldsManager.checkSolution();

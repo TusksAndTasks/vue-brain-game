@@ -5,6 +5,7 @@ export interface ISettingsState {
   flags: FlagsType;
   difficulty: number;
   timer: number;
+  time: string;
 }
 
 export default {
@@ -18,6 +19,7 @@ export default {
     },
     difficulty: 10,
     timer: 10,
+    time: "",
   },
   mutations: {
     updateSettingsState<STATE extends ISettingsState, KEY extends keyof STATE>(
