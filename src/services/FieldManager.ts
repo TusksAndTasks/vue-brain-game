@@ -29,7 +29,6 @@ class FieldManager {
   }
 
   fieldUpdater(e: Event) {
-    console.log(123);
     const newFields = store.state.currentFields.map((el) =>
       el.id === +(e.target as HTMLInputElement).id
         ? { ...el, inputValue: (e.target as HTMLInputElement).value }
