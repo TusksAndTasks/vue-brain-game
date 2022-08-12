@@ -6,6 +6,18 @@
   <router-view />
 </template>
 
+<script setup lang="ts">
+import { onBeforeMount, onMounted } from "vue";
+import store from "@/store";
+
+onBeforeMount(() => store.commit("retrieveSettings"));
+onMounted(() =>
+  store.subscribe((mutation, state) => {
+    localStorage.setItem("settings", JSON.stringify(state.settings));
+  })
+);
+</script>
+
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

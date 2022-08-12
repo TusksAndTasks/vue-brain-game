@@ -21,17 +21,11 @@ export interface IGameField {
 
 export default createStore<IStore>({
   state: {} as IStore,
-  getters: {
-    getActiveFlagsAmount() {
-      return declareAvailableOperators(settings.state.flags).length;
-    },
-  },
   mutations: {
-    updateState<STATE extends IStore, KEY extends keyof STATE>(
-      state: STATE,
-      payload: { key: KEY; value: STATE[KEY] }
-    ) {
-      state[payload.key] = payload.value;
+    retrieveSettings(state: IStore) {
+      if (localStorage.getItem("settings")) {
+        state.settings = JSON.parse(localStorage.getItem("settings") as string);
+      }
     },
   },
   modules: { settings, game },

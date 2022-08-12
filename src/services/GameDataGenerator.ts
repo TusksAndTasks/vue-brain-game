@@ -1,6 +1,8 @@
 import { engine } from "@/engiene";
 import store from "@/store";
 import { fieldsManager } from "@/services/FieldManager";
+import declareAvailableOperators from "@/utils/declareAvailableOperators";
+import settings from "@/store/settings";
 
 class GameDataGenerator {
   #operatorsUpdater() {
@@ -28,7 +30,7 @@ class GameDataGenerator {
 
   logResult() {
     if (
-      store.getters.getActiveFlagsAmount < 2 &&
+      declareAvailableOperators(store.state.settings.flags).length < 2 &&
       store.state.settings.difficulty > 3
     ) {
       return;
