@@ -1,5 +1,7 @@
 <template>
-  <p>{{ store.state.timer.time }}</p>
+  <TimerPrimitive :on-mount="mountTimer" :on-unmount="unmountTimer">{{
+    store.state.timer.displayTime
+  }}</TimerPrimitive>
   <div v-for="field in store.state.game.currentFields" :key="field.id">
     <p v-if="field.id === 0 || field.id % 2 !== 0 || isShown">
       {{ field.value }}
@@ -27,21 +29,23 @@
 <script setup lang="ts">
 import store from "@/store";
 import { gameDataGenerator } from "@/services/GameDataGenerator";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { ref } from "vue";
 import { fieldsManager } from "@/services/FieldManager";
 import ModalPrimitive from "@/primitives/ModalPrimitive.vue";
 import { timer } from "@/utils/Timer";
 import { timerManager } from "@/services/TimerManager";
+import TimerPrimitive from "@/primitives/TimerPrimitive.vue";
 
-onMounted(() =>
-  timer.startTimer(store.state.settings.timer, (time: string) => {
+const mountTimer = () =>
+  timer.startTimer(store.state.settings.userSetTime, (time: string) => {
     timerManager.updateTime(time);
-  })
-);
-onBeforeUnmount(() => {
+  });
+
+const unmountTimer = () => {
   timer.stopTimer();
   timerManager.updateTime("0");
-});
+};
+
 gameDataGenerator.generateGameConditions();
 function handleCheck() {
   fieldsManager.checkSolution();

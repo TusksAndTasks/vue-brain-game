@@ -12,8 +12,8 @@
       :onChange="settingsUpdater.rangesUpdater"
     />
     <RangePrimitive
-      :value="store.state.settings.timer"
-      keyword="timer"
+      :value="store.state.settings.userSetTime"
+      keyword="userSetTime"
       :onChange="settingsUpdater.rangesUpdater"
     />
   </div>

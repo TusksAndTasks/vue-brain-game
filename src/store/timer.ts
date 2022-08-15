@@ -1,10 +1,10 @@
 export interface ITimeState {
-  time: string;
+  displayTime: string;
 }
 
 export default {
   state: {
-    time: "",
+    displayTime: "",
   },
   mutations: {
     updateTimerState<STATE extends ITimeState, KEY extends keyof STATE>(

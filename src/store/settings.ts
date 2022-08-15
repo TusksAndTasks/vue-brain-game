@@ -4,8 +4,7 @@ import { flagsEnum } from "@/engiene";
 export interface ISettingsState {
   flags: FlagsType;
   difficulty: number;
-  timer: number;
-  time: string;
+  userSetTime: number;
 }
 
 export default {
@@ -18,8 +17,7 @@ export default {
       [flagsEnum.POW]: true,
     },
     difficulty: 10,
-    timer: 10,
-    time: "",
+    userSetTime: 10,
   },
   mutations: {
     updateSettingsState<STATE extends ISettingsState, KEY extends keyof STATE>(

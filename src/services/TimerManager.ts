@@ -2,7 +2,7 @@ import store from "@/store";
 
 class TimerManager {
   updateTime(time: string) {
-    store.commit("updateTimerState", { key: "time", value: time });
+    store.commit("updateTimerState", { key: "displayTime", value: time });
   }
 }
 

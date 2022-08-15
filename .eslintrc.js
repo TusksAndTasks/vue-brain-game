@@ -3,6 +3,9 @@ module.exports = {
   env: {
     node: true,
   },
+  globals: {
+    HTMLElementTagNameMap: "readonly",
+  },
   extends: [
     "plugin:vue/vue3-essential",
     "eslint:recommended",
