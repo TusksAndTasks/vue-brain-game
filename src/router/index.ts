@@ -3,14 +3,13 @@ import GamePage from "@/views/GamePage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
-    name: "main",
+    path: "/game",
+    name: "game",
     component: GamePage,
   },
   {
-    path: "/game",
-    name: "game",
-
+    path: "/",
+    name: "main",
     component: () => import("../views/MainPage.vue"),
   },
 ];

@@ -29,12 +29,13 @@
 <script setup lang="ts">
 import store from "@/store";
 import { gameDataGenerator } from "@/services/GameDataGenerator";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { fieldsManager } from "@/services/FieldManager";
 import ModalPrimitive from "@/primitives/ModalPrimitive.vue";
 import { timer } from "@/utils/Timer";
 import { timerManager } from "@/services/TimerManager";
 import TimerPrimitive from "@/primitives/TimerPrimitive.vue";
+import router from "@/router";
 
 const mountTimer = () =>
   timer.startTimer(store.state.settings.userSetTime, (time: string) => {
@@ -53,4 +54,10 @@ function handleCheck() {
 }
 const isShown = ref(false);
 const isModalOpen = ref(false);
+
+watchEffect(() => {
+  if (store.state.timer.displayTime === "00:00") {
+    router.push("/");
+  }
+});
 </script>
