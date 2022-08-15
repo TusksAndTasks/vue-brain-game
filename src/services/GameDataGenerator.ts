@@ -2,7 +2,6 @@ import { engine } from "@/engiene";
 import store from "@/store";
 import { fieldsManager } from "@/services/FieldManager";
 import declareAvailableOperators from "@/utils/declareAvailableOperators";
-import settings from "@/store/settings";
 
 class GameDataGenerator {
   #operatorsUpdater() {
@@ -35,20 +34,20 @@ class GameDataGenerator {
     ) {
       return;
     } else {
-      this.#answerUpdater(this.#calcRecurse());
+      this.#answerUpdater(this.#getEquationData());
       fieldsManager.fieldsCreator();
     }
   }
 
-  #calcRecurse() {
-    let result = this.#calc();
+  #getEquationData() {
+    let result = this.#startEngine();
     if (result > 1000000 || result === 1) {
-      result = this.#calcRecurse();
+      result = this.#getEquationData();
     }
     return result;
   }
 
-  #calc() {
+  #startEngine() {
     this.#operatorsUpdater();
     this.#numbersUpdater();
 

@@ -1,14 +1,15 @@
 import { createStore } from "vuex";
-import declareAvailableOperators from "@/utils/declareAvailableOperators";
 import { flagsEnum } from "@/engiene";
 import settings, { ISettingsState } from "@/store/settings";
 import game, { IGameState } from "@/store/game";
 import timer, { ITimeState } from "@/store/timer";
+import statistics, { IStatisticsState } from "@/store/statistics";
 
 interface IStore {
   settings: ISettingsState;
   game: IGameState;
   timer: ITimeState;
+  statistics: IStatisticsState;
 }
 
 export type FlagsType = {
@@ -30,5 +31,5 @@ export default createStore<IStore>({
       }
     },
   },
-  modules: { settings, game, timer },
+  modules: { settings, game, timer, statistics },
 });

@@ -1,5 +1,17 @@
 <template>
   <div>
+    <p>
+      {{ store.state.statistics.totalCorrectAnswers }}/{{
+        store.state.statistics.totalQuestions
+      }}
+    </p>
+    <p>
+      {{ store.state.statistics.lastRoundCorrectAnswers }}/{{
+        store.state.statistics.lastRoundQuestions
+      }}
+    </p>
+  </div>
+  <div>
     <CheckboxPrimitive
       v-for="flag in flagsEnum"
       :checked="store.state.settings.flags[flag]"

@@ -18,7 +18,7 @@
   <input type="checkbox" v-model="isShown" />
   <button @click="handleCheck">Check</button>
   <ModalPrimitive
-    :on-close="() => gameDataGenerator.generateGameConditions()"
+    :on-close="setNewRound"
     @closeModal="isModalOpen = false"
     v-if="isModalOpen"
   >
@@ -29,13 +29,14 @@
 <script setup lang="ts">
 import store from "@/store";
 import { gameDataGenerator } from "@/services/GameDataGenerator";
-import { ref, watchEffect } from "vue";
+import { onBeforeMount, ref, watchEffect } from "vue";
 import { fieldsManager } from "@/services/FieldManager";
 import ModalPrimitive from "@/primitives/ModalPrimitive.vue";
 import { timer } from "@/utils/Timer";
 import { timerManager } from "@/services/TimerManager";
 import TimerPrimitive from "@/primitives/TimerPrimitive.vue";
 import router from "@/router";
+import { statisticsController } from "@/services/StatisticsController";
 
 const mountTimer = () =>
   timer.startTimer(store.state.settings.userSetTime, (time: string) => {
@@ -47,11 +48,19 @@ const unmountTimer = () => {
   timerManager.updateTime("0");
 };
 
-gameDataGenerator.generateGameConditions();
+const setNewRound = () => {
+  gameDataGenerator.generateGameConditions();
+  statisticsController.updateQuestionsCount();
+};
+
 function handleCheck() {
   fieldsManager.checkSolution();
+  statisticsController.updateCorrectAnswersCount(
+    store.state.game.isCurrentSolutionCorrect
+  );
   isModalOpen.value = true;
 }
+
 const isShown = ref(false);
 const isModalOpen = ref(false);
 
@@ -59,5 +68,10 @@ watchEffect(() => {
   if (store.state.timer.displayTime === "00:00") {
     router.push("/");
   }
+});
+
+onBeforeMount(() => {
+  statisticsController.resetLastRoundStatistics();
+  setNewRound();
 });
 </script>
