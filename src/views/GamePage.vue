@@ -3,22 +3,24 @@
     store.state.timer.displayTime
   }}</TimerPrimitive>
   <div v-for="field in store.state.game.currentFields" :key="field.id">
-    <p v-if="field.id === 0 || field.id % 2 !== 0 || isShown">
+    <p v-if="field.id === 0 || field.id % 2 !== 0 || isNumbersDisplay">
       {{ field.value }}
     </p>
-    <input
+    <GameFieldPrimitive
       v-else
-      type="text"
-      :value="field.inputValue"
-      @change="fieldsManager.fieldUpdater"
-      :id="field.id"
+      :input-value="field.inputValue"
+      :on-input="fieldsManager.changeInputValue"
+      :on-focus="fieldsManager.switchFocus"
+      :field-id="field.id"
     />
   </div>
   <p>{{ store.state.game.currentAnswer }}</p>
-  <input type="checkbox" v-model="isShown" />
-  <button @click="handleCheck">Check</button>
+  <GamePageControlPanel
+    :toggle-numbers-display="toggleNumbersDisplay"
+    :handle-modal-open="handleModalOpen"
+  />
   <ModalPrimitive
-    :on-close="setNewRound"
+    :on-close="gameDataGenerator.setNewRound.bind(gameDataGenerator)"
     @closeModal="isModalOpen = false"
     v-if="isModalOpen"
   >
@@ -32,36 +34,28 @@ import { gameDataGenerator } from "@/services/GameDataGenerator";
 import { onBeforeMount, ref, watchEffect } from "vue";
 import { fieldsManager } from "@/services/FieldManager";
 import ModalPrimitive from "@/primitives/ModalPrimitive.vue";
-import { timer } from "@/utils/Timer";
-import { timerManager } from "@/services/TimerManager";
 import TimerPrimitive from "@/primitives/TimerPrimitive.vue";
 import router from "@/router";
 import { statisticsController } from "@/services/StatisticsController";
+import GameFieldPrimitive from "@/primitives/GameFieldPrimitive.vue";
+import { timerManager } from "@/services/TimerManager";
+import { timer } from "@/utils/Timer";
+import GamePageControlPanel from "@/components/GamePageControlPanel.vue";
 
-const isShown = ref(false);
+const isNumbersDisplay = ref(false);
 const isModalOpen = ref(false);
+const handleModalOpen = () => (isModalOpen.value = true);
+const toggleNumbersDisplay = () =>
+  (isNumbersDisplay.value = !isNumbersDisplay.value);
 
-const mountTimer = () =>
+const mountTimer = () => {
   timer.startTimer(store.state.settings.userSetTime, (time: string) => {
     timerManager.updateTime(time);
   });
-
+};
 const unmountTimer = () => {
   timer.stopTimer();
   timerManager.updateTime("0");
-};
-
-const setNewRound = () => {
-  gameDataGenerator.generateGameConditions();
-  statisticsController.updateQuestionsCount();
-};
-
-const handleCheck = () => {
-  fieldsManager.checkSolution();
-  statisticsController.updateCorrectAnswersCount(
-    store.state.game.isCurrentSolutionCorrect
-  );
-  isModalOpen.value = true;
 };
 
 watchEffect(() => {
@@ -72,6 +66,6 @@ watchEffect(() => {
 
 onBeforeMount(() => {
   statisticsController.resetLastRoundStatistics();
-  setNewRound();
+  gameDataGenerator.setNewRound();
 });
 </script>

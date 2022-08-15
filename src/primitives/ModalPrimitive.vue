@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, defineProps, ref } from "vue";
+import { defineEmits, defineProps } from "vue";
 
 const emits = defineEmits<{
   (e: "closeModal"): void;

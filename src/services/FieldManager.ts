@@ -31,14 +31,22 @@ class FieldManager {
     });
   }
 
-  fieldUpdater(e: Event) {
-    const newFields = store.state.game.currentFields.map((el) =>
-      el.id === +(e.target as HTMLInputElement).id
-        ? { ...el, inputValue: (e.target as HTMLInputElement).value }
-        : el
-    );
+  fieldUpdater(newValue: string) {
+    return function () {
+      const newFields = store.state.game.currentFields.map((el) =>
+        el.id == store.state.game.focusedFieldId
+          ? {
+              ...el,
+              inputValue: el.inputValue + newValue.slice(-1),
+            }
+          : el
+      );
 
-    store.commit("updateGameState", { key: "currentFields", value: newFields });
+      store.commit("updateGameState", {
+        key: "currentFields",
+        value: newFields,
+      });
+    };
   }
 
   updateSolutionCorrectness(isCorrect: boolean) {
@@ -46,6 +54,10 @@ class FieldManager {
       key: "isCurrentSolutionCorrect",
       value: isCorrect,
     });
+  }
+
+  changeFocusedField(focusId: number) {
+    store.commit("updateGameState", { key: "focusedFieldId", value: focusId });
   }
 
   checkSolution() {
@@ -73,6 +85,14 @@ class FieldManager {
     isCorrect = inputResult === store.state.game.currentAnswer;
 
     this.updateSolutionCorrectness(isCorrect);
+  }
+
+  switchFocus(newFocusedElement: HTMLInputElement) {
+    fieldsManager.changeFocusedField(+newFocusedElement.id);
+  }
+
+  changeInputValue(focusedInput: HTMLInputElement) {
+    fieldsManager.fieldUpdater(focusedInput.value)();
   }
 }
 

@@ -2,6 +2,7 @@ import { engine } from "@/engiene";
 import store from "@/store";
 import { fieldsManager } from "@/services/FieldManager";
 import declareAvailableOperators from "@/utils/declareAvailableOperators";
+import { statisticsController } from "@/services/StatisticsController";
 
 class GameDataGenerator {
   #operatorsUpdater() {
@@ -27,7 +28,7 @@ class GameDataGenerator {
     store.commit("updateGameState", { key: "currentAnswer", value: answer });
   }
 
-  generateGameConditions() {
+  #generateGameConditions() {
     if (
       declareAvailableOperators(store.state.settings.flags).length < 2 &&
       store.state.settings.difficulty > 3
@@ -37,6 +38,21 @@ class GameDataGenerator {
       this.#answerUpdater(this.#getEquationData());
       fieldsManager.fieldsCreator();
     }
+  }
+
+  setNewRound() {
+    this.#generateGameConditions();
+    statisticsController.updateQuestionsCount();
+  }
+
+  handleCheck(handleModal: () => void) {
+    return function () {
+      fieldsManager.checkSolution();
+      statisticsController.updateCorrectAnswersCount(
+        store.state.game.isCurrentSolutionCorrect
+      );
+      handleModal();
+    };
   }
 
   #getEquationData() {

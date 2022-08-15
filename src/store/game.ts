@@ -7,6 +7,7 @@ export interface IGameState {
   currentAnswer: number;
   currentFields: Array<IGameField>;
   isCurrentSolutionCorrect: boolean;
+  focusedFieldId: number;
 }
 
 export default {
@@ -16,6 +17,7 @@ export default {
     currentAnswer: 0,
     currentFields: [] as Array<IGameField>,
     isCurrentSolutionCorrect: false,
+    focusedFieldId: 2,
   },
   mutations: {
     updateGameState<STATE extends IGameState, KEY extends keyof STATE>(
