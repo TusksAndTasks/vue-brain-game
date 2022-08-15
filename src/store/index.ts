@@ -25,9 +25,9 @@ export interface IGameField {
 export default createStore<IStore>({
   state: {} as IStore,
   mutations: {
-    retrieveSettings(state: IStore) {
+    retrieveLocalState(state: IStore, key: keyof IStore) {
       if (localStorage.getItem("settings")) {
-        state.settings = JSON.parse(localStorage.getItem("settings") as string);
+        state[key] = JSON.parse(localStorage.getItem(key) as string);
       }
     },
   },

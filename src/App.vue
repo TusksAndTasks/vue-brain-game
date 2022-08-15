@@ -10,9 +10,13 @@
 import { onBeforeMount, onMounted } from "vue";
 import store from "@/store";
 
-onBeforeMount(() => store.commit("retrieveSettings"));
+onBeforeMount(() => {
+  store.commit("retrieveLocalState", "statistics");
+  store.commit("retrieveLocalState", "settings");
+});
 onMounted(() =>
   store.subscribe((mutation, state) => {
+    localStorage.setItem("statistics", JSON.stringify(state.statistics));
     localStorage.setItem("settings", JSON.stringify(state.settings));
   })
 );

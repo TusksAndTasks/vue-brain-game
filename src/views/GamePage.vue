@@ -38,6 +38,9 @@ import TimerPrimitive from "@/primitives/TimerPrimitive.vue";
 import router from "@/router";
 import { statisticsController } from "@/services/StatisticsController";
 
+const isShown = ref(false);
+const isModalOpen = ref(false);
+
 const mountTimer = () =>
   timer.startTimer(store.state.settings.userSetTime, (time: string) => {
     timerManager.updateTime(time);
@@ -53,16 +56,13 @@ const setNewRound = () => {
   statisticsController.updateQuestionsCount();
 };
 
-function handleCheck() {
+const handleCheck = () => {
   fieldsManager.checkSolution();
   statisticsController.updateCorrectAnswersCount(
     store.state.game.isCurrentSolutionCorrect
   );
   isModalOpen.value = true;
-}
-
-const isShown = ref(false);
-const isModalOpen = ref(false);
+};
 
 watchEffect(() => {
   if (store.state.timer.displayTime === "00:00") {
