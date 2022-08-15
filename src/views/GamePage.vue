@@ -3,9 +3,13 @@
     store.state.timer.displayTime
   }}</TimerPrimitive>
   <div v-for="field in store.state.game.currentFields" :key="field.id">
-    <p v-if="field.id === 0 || field.id % 2 !== 0 || isNumbersDisplay">
+    <TypographyPrimitive
+      :color="colors.GRAY"
+      elem="p"
+      v-if="field.id === 0 || field.id % 2 !== 0 || isNumbersDisplay"
+    >
       {{ field.value }}
-    </p>
+    </TypographyPrimitive>
     <GameFieldPrimitive
       v-else
       :input-value="field.inputValue"
@@ -14,7 +18,9 @@
       :field-id="field.id"
     />
   </div>
-  <p>{{ store.state.game.currentAnswer }}</p>
+  <TypographyPrimitive :color="colors.GRAY" elem="p">{{
+    store.state.game.currentAnswer
+  }}</TypographyPrimitive>
   <GamePageControlPanel
     :toggle-numbers-display="toggleNumbersDisplay"
     :handle-modal-open="handleModalOpen"
@@ -41,6 +47,8 @@ import GameFieldPrimitive from "@/primitives/GameFieldPrimitive.vue";
 import { timerManager } from "@/services/TimerManager";
 import { timer } from "@/utils/Timer";
 import GamePageControlPanel from "@/components/GamePageControlPanel.vue";
+import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
+import { colors } from "@/themes/colors";
 
 const isNumbersDisplay = ref(false);
 const isModalOpen = ref(false);

@@ -13,8 +13,6 @@
   />
 </template>
 
-//v-else
-
 <script lang="ts" setup>
 import { defineProps } from "vue";
 import store from "@/store";
@@ -28,10 +26,17 @@ const props = defineProps<{
 
 const getEventElement =
   (callback: (eventElement: HTMLInputElement) => void) => (e: Event) => {
-    console.log(e);
     callback(e.target as HTMLInputElement);
   };
 
 const handleInput = getEventElement(props.onInput);
 const handleFocus = getEventElement(props.onFocus);
 </script>
+
+<style scoped lang="scss">
+input {
+  &:focus {
+    outline: none;
+  }
+}
+</style>

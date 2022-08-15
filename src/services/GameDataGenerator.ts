@@ -1,7 +1,6 @@
 import { engine } from "@/engiene";
 import store from "@/store";
 import { fieldsManager } from "@/services/FieldManager";
-import declareAvailableOperators from "@/utils/declareAvailableOperators";
 import { statisticsController } from "@/services/StatisticsController";
 
 class GameDataGenerator {
@@ -29,15 +28,8 @@ class GameDataGenerator {
   }
 
   #generateGameConditions() {
-    if (
-      declareAvailableOperators(store.state.settings.flags).length < 2 &&
-      store.state.settings.difficulty > 3
-    ) {
-      return;
-    } else {
-      this.#answerUpdater(this.#getEquationData());
-      fieldsManager.fieldsCreator();
-    }
+    this.#answerUpdater(this.#getEquationData());
+    fieldsManager.fieldsCreator();
   }
 
   setNewRound() {
