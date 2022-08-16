@@ -2,7 +2,6 @@
   <div class="modal-overlay" id="close" @click="closeModal">
     <div class="modal">
       <slot></slot>
-      <button id="close">Next Round</button>
     </div>
   </div>
 </template>
@@ -37,7 +36,7 @@ function closeModal(e: Event) {
 
   & .modal {
     width: 30%;
-    height: auto;
+    height: 200px;
     background-color: white;
   }
 }

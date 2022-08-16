@@ -1,5 +1,10 @@
 <template>
-  <component :is="elem" :style="CSSProps" :class="className">
+  <component
+    :is="elem"
+    :style="CSSProps"
+    class="standard-text"
+    :class="className"
+  >
     <slot></slot>
   </component>
 </template>
@@ -7,20 +12,19 @@
 <script lang="ts" setup>
 import { computed, defineProps, withDefaults } from "vue";
 import { colors } from "@/themes/colors";
-import { sizes } from "@/themes/sizes";
+import { fontSizes } from "@/themes/sizes";
 
 const props = withDefaults(
   defineProps<{
     elem: keyof HTMLElementTagNameMap;
     className?: string;
     color?: colors;
-    size?: sizes;
+    size?: fontSizes;
   }>(),
   {
     elem: "span",
-    className: "standard-text",
     color: colors.BLACK,
-    size: sizes.MEDIUM,
+    size: fontSizes.MEDIUM,
   }
 );
 
@@ -36,6 +40,23 @@ const CSSProps = computed(() => {
 .standard-text {
   font-size: var(--size-prop);
   color: var(--color-prop);
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Microsoft Sans Serif", sans-serif;
+  letter-spacing: 1.5px;
+}
+
+.bold-text {
+  font-weight: 600;
+}
+
+.range-text {
+  position: absolute;
+  top: 0;
+}
+
+.range-min {
+  left: 0;
+}
+.range-max {
+  right: 0;
 }
 </style>

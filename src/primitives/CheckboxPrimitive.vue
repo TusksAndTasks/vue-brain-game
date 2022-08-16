@@ -1,5 +1,8 @@
 <template>
-  <input type="checkbox" :checked="props.checked" @change="props.onCheck" />
+  <div class="checkbox-container">
+    <input type="checkbox" :checked="props.checked" @change="props.onCheck" />
+    <slot></slot>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -10,3 +13,15 @@ const props = defineProps<{
   onCheck: () => void;
 }>();
 </script>
+
+<style lang="scss">
+.checkbox-container {
+  display: flex;
+  gap: 10px;
+  padding-bottom: 10px;
+
+  & input {
+    width: 20px;
+  }
+}
+</style>

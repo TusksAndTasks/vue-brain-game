@@ -1,40 +1,50 @@
 <template>
-  <div>
-    <p>
-      {{ store.state.statistics.totalCorrectAnswers }}/{{
-        store.state.statistics.totalQuestions
-      }}
-    </p>
-    <p>
-      {{ store.state.statistics.lastRoundCorrectAnswers }}/{{
-        store.state.statistics.lastRoundQuestions
-      }}
-    </p>
-  </div>
-  <div>
-    <CheckboxPrimitive
-      v-for="flag in flagsEnum"
-      :checked="store.state.settings.flags[flag]"
-      :onCheck="settingsUpdater.flagsUpdater(flag)"
-      :key="flag"
-    />
-    <RangePrimitive
-      :value="store.state.settings.difficulty"
-      keyword="difficulty"
-      :onChange="settingsUpdater.rangesUpdater"
-    />
-    <RangePrimitive
-      :value="store.state.settings.userSetTime"
-      keyword="userSetTime"
-      :onChange="settingsUpdater.rangesUpdater"
-    />
+  <div class="main-page-container">
+    <MainPageStatistics />
+    <MainPageSettings />
+    <ButtonPrimitive
+      :callback="sendToGamePage"
+      class-name="rectangle-button"
+      :color="{ primary: colors.WHITE, hover: colors.GRAY }"
+      >Play!</ButtonPrimitive
+    >
+    <TypographyPrimitive elem="p" :size="fontSizes.SMALL" :color="colors.RED"
+      >NB!: На уровне сложности выше 3, необходимо выбрать минимум 2 вида
+      операций.</TypographyPrimitive
+    >
   </div>
 </template>
 
 <script setup lang="ts">
-import { settingsUpdater } from "@/services/SettingsUpdater";
-import { flagsEnum } from "@/engiene";
-import store from "@/store";
-import CheckboxPrimitive from "@/primitives/CheckboxPrimitive.vue";
-import RangePrimitive from "@/primitives/RangePrimitive.vue";
+import MainPageSettings from "@/components/MainPageSettings.vue";
+import MainPageStatistics from "@/components/MainPageStatistics.vue";
+import ButtonPrimitive from "@/primitives/ButtonPrimitive.vue";
+import router from "@/router";
+import { colors } from "@/themes/colors";
+import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
+import { fontSizes } from "@/themes/sizes";
+
+const sendToGamePage = () => {
+  router.push("/game");
+};
 </script>
+
+<style lang="scss" scoped>
+.main-page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+button {
+  margin-left: 500px;
+  margin-top: 100px;
+}
+
+p {
+  margin-left: 500px;
+  width: 300px;
+}
+</style>

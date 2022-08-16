@@ -1,5 +1,4 @@
 import store from "@/store";
-import { timer } from "@/utils/Timer";
 
 class TimerManager {
   updateTime(time: string) {

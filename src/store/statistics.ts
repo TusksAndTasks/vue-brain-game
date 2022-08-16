@@ -3,6 +3,7 @@ export interface IStatisticsState {
   lastRoundCorrectAnswers: number;
   totalQuestions: number;
   totalCorrectAnswers: number;
+  firstGameTimestamp: number;
 }
 
 export default {
@@ -11,6 +12,7 @@ export default {
     lastRoundCorrectAnswers: 0,
     totalQuestions: 0,
     totalCorrectAnswers: 0,
+    firstGameTimestamp: 0,
   },
   mutations: {
     updateStatisticsState<

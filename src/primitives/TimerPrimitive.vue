@@ -1,25 +1,34 @@
 <template>
-  <div class="timer">
-    <TypographyPrimitive elem="h1" :size="sizes.LARGE">
+  <div class="timer" :style="CSSProps">
+    <TypographyPrimitive elem="h1" :size="fontSizes.MEDIUM">
       <slot></slot>
     </TypographyPrimitive>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { defineProps, onBeforeUnmount, onMounted } from "vue";
 import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
-import { sizes } from "@/themes/sizes";
+import { fontSizes } from "@/themes/sizes";
+import { computed, defineProps, withDefaults } from "vue";
+import { colors } from "@/themes/colors";
 
-const props = defineProps<{ onMount: () => void; onUnmount: () => void }>();
+const props = withDefaults(defineProps<{ color?: colors }>(), {
+  color: colors.BLUE,
+});
 
-onMounted(props.onMount);
-onBeforeUnmount(props.onUnmount);
+const CSSProps = computed(() => ({ "--color-prop": props.color }));
 </script>
 
 <style lang="scss">
 .timer {
-  border: 1px solid black;
-  background-color: gray;
+  background-color: #e3e2e2;
+  width: 150px;
+  height: 50px;
+  border: 2px solid var(--color-prop);
+  border-right: var(--color-prop) 30px solid;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 10px;
 }
 </style>

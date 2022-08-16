@@ -1,28 +1,31 @@
 <template>
   <input
     type="text"
+    maxlength="2"
     :value="inputValue"
     @input="handleInput"
     @focus="handleFocus"
     :id="fieldId"
-    :style="
-      store.state.game.focusedFieldId === fieldId
-        ? { border: '1px red solid' }
-        : { border: '1px black solid' }
-    "
+    :style="{ border: 'none', borderBottom: `${CSSProps} 2px solid` }"
   />
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from "vue";
+import { computed, defineProps, withDefaults } from "vue";
 import store from "@/store";
+import { colors } from "@/themes/colors";
 
-const props = defineProps<{
-  inputValue: string;
-  fieldId: number;
-  onFocus: (eventElement: HTMLInputElement) => void;
-  onInput: (eventElement: HTMLInputElement) => void;
-}>();
+const props = withDefaults(
+  defineProps<{
+    inputValue: string;
+    fieldId: number;
+    colors?: { primary: colors; focus: colors };
+    maxlength?: number;
+    onFocus: (eventElement: HTMLInputElement) => void;
+    onInput: (eventElement: HTMLInputElement) => void;
+  }>(),
+  { colors: () => ({ primary: colors.GRAY, focus: colors.BLUE }), maxlength: 2 }
+);
 
 const getEventElement =
   (callback: (eventElement: HTMLInputElement) => void) => (e: Event) => {
@@ -31,10 +34,21 @@ const getEventElement =
 
 const handleInput = getEventElement(props.onInput);
 const handleFocus = getEventElement(props.onFocus);
+
+const CSSProps = computed(() =>
+  store.state.game.focusedFieldId === props.fieldId
+    ? props.colors.focus
+    : props.colors.primary
+);
 </script>
 
 <style scoped lang="scss">
 input {
+  width: 40px;
+  font-size: 30px;
+  font-family: "Microsoft Sans Serif", sans-serif;
+  font-weight: 700;
+
   &:focus {
     outline: none;
   }

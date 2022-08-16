@@ -33,14 +33,20 @@ class FieldManager {
 
   fieldUpdater(newValue: string) {
     return function () {
-      const newFields = store.state.game.currentFields.map((el) =>
-        el.id == store.state.game.focusedFieldId
-          ? {
-              ...el,
-              inputValue: el.inputValue + newValue.slice(-1),
-            }
-          : el
-      );
+      const newFields = store.state.game.currentFields.map((el) => {
+        if (el.id == store.state.game.focusedFieldId) {
+          const newFieldContent =
+            newValue.length > 1 ||
+            newValue.length < (el.inputValue as string).length
+              ? newValue
+              : el.inputValue + newValue.slice(-1);
+          return {
+            ...el,
+            inputValue: newFieldContent,
+          };
+        }
+        return el;
+      });
 
       store.commit("updateGameState", {
         key: "currentFields",
