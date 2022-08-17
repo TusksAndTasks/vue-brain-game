@@ -1,5 +1,6 @@
-import { flagsEnum } from "@/services/EquationGenerationController";
 import model from "@/model";
+
+import { flagsEnum } from "@/services/EquationGenerationController";
 
 class SettingsController {
   flagsUpdater(flag: flagsEnum) {

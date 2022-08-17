@@ -40,13 +40,15 @@
 </template>
 
 <script lang="ts" setup>
-import { settingsController } from "@/services/SettingsController";
-import { flagsEnum } from "@/services/EquationGenerationController";
-import model from "@/model";
-import { fontSizes } from "@/themes/sizes";
 import CheckboxPrimitive from "@/primitives/CheckboxPrimitive.vue";
 import RangePrimitive from "@/primitives/RangePrimitive.vue";
 import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
+
+import model from "@/model";
+import { settingsController } from "@/services/SettingsController";
+import { fontSizes } from "@/themes/sizes";
+
+import { flagsEnum } from "@/services/EquationGenerationController";
 
 const descriptions = {
   [flagsEnum.SUM]: "Суммирование",

@@ -1,5 +1,7 @@
-import { FlagsType } from "@/model";
 import declareAvailableOperators from "@/utils/declareAvailableOperators";
+import checkIsPrimeNumber from "@/utils/checkIsPrimeNumber";
+
+import { FlagsType } from "@/model";
 
 export enum flagsEnum {
   SUM = "SUM",
@@ -42,19 +44,16 @@ class EquationGenerationController {
     this.currentResult = 0;
     this.numbersCreatorsMap = {
       [operatorsMap[flagsEnum.SUM]]: ({ upperCap, lowerCap }: ICaps) =>
-        EquationGenerationController.#generateRandomNumber(upperCap, lowerCap),
+        this.#generateRandomNumber(upperCap, lowerCap),
       [operatorsMap[flagsEnum.SUBSTR]]: ({ upperCap, lowerCap }: ICaps) =>
-        EquationGenerationController.#generateRandomNumber(upperCap, lowerCap),
+        this.#generateRandomNumber(upperCap, lowerCap),
       [operatorsMap[flagsEnum.MUL]]: ({ upperCap, lowerCap }: ICaps) =>
-        EquationGenerationController.#generateRandomNumber(upperCap, lowerCap),
+        this.#generateRandomNumber(upperCap, lowerCap),
       [operatorsMap[flagsEnum.DIV]]: ({ upperCap, lowerCap }: ICaps) =>
         this.#generateDividableNumber(upperCap, lowerCap, this.currentResult),
       [operatorsMap[flagsEnum.POW]]: ({ upperCap, lowerCap }: ICaps) => {
         return this.currentResult < 1000000000
-          ? EquationGenerationController.#generateRandomNumber(
-              upperCap,
-              lowerCap
-            )
+          ? this.#generateRandomNumber(upperCap, lowerCap)
           : 0;
       },
     };
@@ -71,22 +70,13 @@ class EquationGenerationController {
   numbersCreatorsMap: Record<string, (args: ICaps) => number>;
   numbersCapsMap: Record<string, ICaps>;
 
-  static #generateNotAPrimeNumber(upperCap: number, lowerCap: number) {
-    const number = EquationGenerationController.#generateRandomNumber(
-      upperCap,
-      lowerCap
-    );
+  #generateNotAPrimeNumber(upperCap: number, lowerCap: number) {
+    const number = this.#generateRandomNumber(upperCap, lowerCap);
 
-    return EquationGenerationController.#isPrime(number) ? number + 1 : number;
+    return checkIsPrimeNumber(number) ? number + 1 : number;
   }
 
-  static #isPrime(num: number) {
-    for (let i = 2, s = Math.sqrt(num); i <= s; i++)
-      if (num % i === 0) return false;
-    return num > 1;
-  }
-
-  static #generateRandomNumber(upperCap: number, lowerCap = 0) {
+  #generateRandomNumber(upperCap: number, lowerCap = 0) {
     return Math.floor(Math.random() * (upperCap - lowerCap) + lowerCap);
   }
 
@@ -95,14 +85,8 @@ class EquationGenerationController {
     lowerFloatingCap: number,
     currentResult: number
   ): number {
-    const lowerCap = EquationGenerationController.#generateRandomNumber(
-      lowerFloatingCap,
-      1
-    );
-    const number = EquationGenerationController.#generateRandomNumber(
-      upperCap,
-      lowerCap
-    );
+    const lowerCap = this.#generateRandomNumber(lowerFloatingCap, 1);
+    const number = this.#generateRandomNumber(upperCap, lowerCap);
 
     if (currentResult % number === 0) {
       return number;
@@ -117,8 +101,8 @@ class EquationGenerationController {
   generateNumbers(amount: number, operators: Array<operatorsType>) {
     const startNumber =
       operators[0] === operatorsMap[flagsEnum.DIV]
-        ? EquationGenerationController.#generateNotAPrimeNumber(100, 10)
-        : EquationGenerationController.#generateRandomNumber(20, 1);
+        ? this.#generateNotAPrimeNumber(100, 10)
+        : this.#generateRandomNumber(20, 1);
     const numbersArray = [startNumber];
 
     this.currentResult = startNumber;
@@ -146,10 +130,9 @@ class EquationGenerationController {
     const operatorsArray = [];
 
     for (let i = 0; i < amount; i++) {
-      const randomOperatorIndex =
-        EquationGenerationController.#generateRandomNumber(
-          availableOperators.length
-        );
+      const randomOperatorIndex = this.#generateRandomNumber(
+        availableOperators.length
+      );
       operatorsArray.push(availableOperators[randomOperatorIndex]);
     }
 

@@ -4,6 +4,7 @@
 
 <script setup lang="ts">
 import { onBeforeMount, onMounted } from "vue";
+
 import model from "@/model";
 
 onBeforeMount(() => {

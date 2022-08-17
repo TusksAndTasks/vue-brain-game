@@ -27,7 +27,9 @@
 
 <script setup lang="ts">
 import { computed, defineProps, withDefaults } from "vue";
+
 import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
+
 import { fontSizes } from "@/themes/sizes";
 
 const props = withDefaults(
@@ -57,6 +59,7 @@ const getEventValue =
   };
 
 const handleChange = getEventValue(props.onChange);
+
 const CSSProps = computed(() => ({
   "--bg-size":
     ((props.value - props.min) * 100) / (props.max - props.min) + "%",

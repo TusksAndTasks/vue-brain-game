@@ -18,11 +18,12 @@
 </template>
 
 <script lang="ts" setup>
-import { fontSizes } from "@/themes/sizes";
+import { computed, onMounted } from "vue";
 
 import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
-import { computed, onMounted } from "vue";
+
 import model from "@/model";
+import { fontSizes } from "@/themes/sizes";
 
 onMounted(() => {
   if (!model.state.statistics.firstGameTimestamp) {

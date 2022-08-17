@@ -12,6 +12,7 @@
 
 <script lang="ts" setup>
 import { computed, defineProps, withDefaults } from "vue";
+
 import { colors } from "@/themes/colors";
 
 const props = withDefaults(

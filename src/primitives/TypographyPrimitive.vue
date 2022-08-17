@@ -11,6 +11,7 @@
 
 <script lang="ts" setup>
 import { computed, defineProps, withDefaults } from "vue";
+
 import { colors } from "@/themes/colors";
 import { fontSizes } from "@/themes/sizes";
 

@@ -1,9 +1,11 @@
 import { createStore } from "vuex";
-import { flagsEnum } from "@/services/EquationGenerationController";
+
 import settings, { ISettingsModel } from "@/model/settings";
 import game, { IGameModel } from "@/model/game";
 import timer, { ITimeModel } from "@/model/timer";
 import statistics, { IStatisticsModel } from "@/model/statistics";
+
+import { flagsEnum } from "@/services/EquationGenerationController";
 
 interface IModel {
   settings: ISettingsModel;

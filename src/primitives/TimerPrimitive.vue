@@ -7,9 +7,11 @@
 </template>
 
 <script lang="ts" setup>
-import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
-import { fontSizes } from "@/themes/sizes";
 import { computed, defineProps, withDefaults } from "vue";
+
+import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
+
+import { fontSizes } from "@/themes/sizes";
 import { colors } from "@/themes/colors";
 
 const props = withDefaults(defineProps<{ color?: colors }>(), {

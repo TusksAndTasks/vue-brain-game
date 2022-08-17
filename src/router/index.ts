@@ -1,7 +1,9 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+
 import GamePage from "@/views/GamePage.vue";
-import declareAvailableOperators from "@/utils/declareAvailableOperators";
+
 import model from "@/model";
+import declareAvailableOperators from "@/utils/declareAvailableOperators";
 
 const routes: Array<RouteRecordRaw> = [
   {

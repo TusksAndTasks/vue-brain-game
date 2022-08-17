@@ -1,7 +1,7 @@
-import { equationGenerationController } from "@/services/EquationGenerationController";
 import model from "@/model";
 import { gameFieldsController } from "@/services/GameFieldsController";
 import { statisticsController } from "@/services/StatisticsController";
+import { equationGenerationController } from "@/services/EquationGenerationController";
 
 class EquationController {
   #updateOperators() {

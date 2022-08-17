@@ -12,13 +12,15 @@
 </template>
 
 <script lang="ts" setup>
-import { timer } from "@/utils/Timer";
-import model from "@/model";
-import { timerController } from "@/services/TimerController";
-import router from "@/router";
 import { onBeforeUnmount, onMounted } from "vue";
+
 import ButtonPrimitive from "@/primitives/ButtonPrimitive.vue";
 import TimerPrimitive from "@/primitives/TimerPrimitive.vue";
+
+import model from "@/model";
+import router from "@/router";
+import { timer } from "@/utils/Timer";
+import { timerController } from "@/services/TimerController";
 import { colors } from "@/themes/colors";
 import { fontSizes } from "@/themes/sizes";
 

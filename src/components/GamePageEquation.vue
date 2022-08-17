@@ -32,12 +32,14 @@
 </template>
 
 <script lang="ts" setup>
-import { colors } from "@/themes/colors";
+import { defineProps } from "vue";
+
 import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
 import GameFieldPrimitive from "@/primitives/GameFieldPrimitive.vue";
-import { gameFieldsController } from "@/services/GameFieldsController";
+
 import model from "@/model";
-import { defineProps } from "vue";
+import { gameFieldsController } from "@/services/GameFieldsController";
+import { colors } from "@/themes/colors";
 import { fontSizes } from "@/themes/sizes";
 
 defineProps<{ isNumberDisplay: boolean }>();

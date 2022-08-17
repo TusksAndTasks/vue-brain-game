@@ -23,18 +23,21 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onBeforeMount, ref, watchEffect } from "vue";
+
+import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
+import ButtonPrimitive from "@/primitives/ButtonPrimitive.vue";
+import ModalPrimitive from "@/primitives/ModalPrimitive.vue";
+
+import GamePageUtilitiesBlock from "@/components/GamePageUtilitiesBlock.vue";
+import GamePageEquation from "@/components/GamePageEquation.vue";
+import GamePageControlPanel from "@/components/GamePageControlPanel.vue";
+
+import router from "@/router";
 import model from "@/model";
 import { equationController } from "@/services/EquationController";
-import { computed, onBeforeMount, ref, watchEffect } from "vue";
-import ModalPrimitive from "@/primitives/ModalPrimitive.vue";
-import router from "@/router";
 import { statisticsController } from "@/services/StatisticsController";
-import GamePageControlPanel from "@/components/GamePageControlPanel.vue";
-import GamePageEquation from "@/components/GamePageEquation.vue";
-import GamePageUtilitiesBlock from "@/components/GamePageUtilitiesBlock.vue";
-import ButtonPrimitive from "@/primitives/ButtonPrimitive.vue";
 import { colors } from "@/themes/colors";
-import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
 import { fontSizes } from "@/themes/sizes";
 
 const isNumbersDisplay = ref(false);

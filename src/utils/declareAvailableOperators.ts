@@ -1,5 +1,6 @@
-import { FlagsType } from "@/model";
 import { operatorsMap } from "@/services/EquationGenerationController";
+
+import { FlagsType } from "@/model";
 
 export default function declareAvailableOperators(flags: FlagsType) {
   const availableOperators = [] as Array<string>;

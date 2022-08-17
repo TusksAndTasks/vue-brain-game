@@ -16,12 +16,15 @@
 </template>
 
 <script setup lang="ts">
+import router from "@/router";
+
+import ButtonPrimitive from "@/primitives/ButtonPrimitive.vue";
+import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
+
 import MainPageSettings from "@/components/MainPageSettings.vue";
 import MainPageStatistics from "@/components/MainPageStatistics.vue";
-import ButtonPrimitive from "@/primitives/ButtonPrimitive.vue";
-import router from "@/router";
+
 import { colors } from "@/themes/colors";
-import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
 import { fontSizes } from "@/themes/sizes";
 
 const sendToGamePage = () => {

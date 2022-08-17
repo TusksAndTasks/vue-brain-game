@@ -56,13 +56,15 @@
 </template>
 
 <script lang="ts" setup>
-import ButtonPrimitive from "@/primitives/ButtonPrimitive.vue";
-import model from "@/model";
 import { defineProps } from "vue";
+
+import ButtonPrimitive from "@/primitives/ButtonPrimitive.vue";
+
+import model from "@/model";
 import { equationController } from "@/services/EquationController";
+import { gameFieldsController } from "@/services/GameFieldsController";
 import { colors } from "@/themes/colors";
 import { fontSizes } from "@/themes/sizes";
-import { gameFieldsController } from "@/services/GameFieldsController";
 
 defineProps<{
   toggleNumbersDisplay: () => void;
