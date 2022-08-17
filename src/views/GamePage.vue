@@ -6,7 +6,7 @@
     :handle-modal-open="handleModalOpen"
   />
   <ModalPrimitive
-    :on-close="gameDataGenerator.setNewRound.bind(gameDataGenerator)"
+    :on-close="equationController.setNewRound.bind(equationController)"
     @closeModal="isModalOpen = false"
     v-if="isModalOpen"
   >
@@ -23,8 +23,8 @@
 </template>
 
 <script setup lang="ts">
-import store from "@/store";
-import { gameDataGenerator } from "@/services/GameDataGenerator";
+import model from "@/model";
+import { equationController } from "@/services/EquationController";
 import { computed, onBeforeMount, ref, watchEffect } from "vue";
 import ModalPrimitive from "@/primitives/ModalPrimitive.vue";
 import router from "@/router";
@@ -43,19 +43,19 @@ const handleModalOpen = () => (isModalOpen.value = true);
 const toggleNumbersDisplay = () =>
   (isNumbersDisplay.value = !isNumbersDisplay.value);
 const resultMessage = computed(() =>
-  store.state.game.isCurrentSolutionCorrect
+  model.state.game.isCurrentSolutionCorrect
     ? "Правильный ответ!"
     : "Вы ошиблись!"
 );
 
 watchEffect(() => {
-  if (store.state.timer.displayTime === "00:00") {
+  if (model.state.timer.displayTime === "00:00") {
     router.push("/");
   }
 });
 
 onBeforeMount(() => {
   statisticsController.resetLastRoundStatistics();
-  gameDataGenerator.setNewRound();
+  equationController.setNewRound();
 });
 </script>

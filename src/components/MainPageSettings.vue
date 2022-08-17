@@ -4,32 +4,32 @@
       >Настройки</TypographyPrimitive
     >
     <RangePrimitive
-      :value="store.state.settings.userSetTime"
+      :value="model.state.settings.userSetTime"
       :min="1"
       :max="15"
       keyword="userSetTime"
-      :onChange="settingsUpdater.rangesUpdater"
+      :onChange="settingsController.rangesUpdater"
     >
       <TypographyPrimitive elem="p" :size="fontSizes.SMALL"
         >Длительность
-        {{ store.state.settings.userSetTime }} минут</TypographyPrimitive
+        {{ model.state.settings.userSetTime }} минут</TypographyPrimitive
       >
     </RangePrimitive>
     <RangePrimitive
-      :value="store.state.settings.difficulty"
+      :value="model.state.settings.difficulty"
       keyword="difficulty"
       :min="1"
       :max="10"
-      :onChange="settingsUpdater.rangesUpdater"
+      :onChange="settingsController.rangesUpdater"
     >
       <TypographyPrimitive elem="p" :size="fontSizes.SMALL"
-        >Сложность {{ store.state.settings.difficulty }}</TypographyPrimitive
+        >Сложность {{ model.state.settings.difficulty }}</TypographyPrimitive
       >
     </RangePrimitive>
     <CheckboxPrimitive
       v-for="flag in flagsEnum"
-      :checked="store.state.settings.flags[flag]"
-      :onCheck="settingsUpdater.flagsUpdater(flag)"
+      :checked="model.state.settings.flags[flag]"
+      :onCheck="settingsController.flagsUpdater(flag)"
       :key="flag"
     >
       <TypographyPrimitive elem="span" :size="fontSizes.SMALL">{{
@@ -40,9 +40,9 @@
 </template>
 
 <script lang="ts" setup>
-import { settingsUpdater } from "@/services/SettingsUpdater";
-import { flagsEnum } from "@/engiene";
-import store from "@/store";
+import { settingsController } from "@/services/SettingsController";
+import { flagsEnum } from "@/services/EquationGenerationController";
+import model from "@/model";
 import { fontSizes } from "@/themes/sizes";
 import CheckboxPrimitive from "@/primitives/CheckboxPrimitive.vue";
 import RangePrimitive from "@/primitives/RangePrimitive.vue";

@@ -7,14 +7,14 @@
       :font-size="fontSizes.MEDIUM"
       >ОТМЕНА</ButtonPrimitive
     >
-    <TimerPrimitive>{{ store.state.timer.displayTime }}</TimerPrimitive>
+    <TimerPrimitive>{{ model.state.timer.displayTime }}</TimerPrimitive>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { timer } from "@/utils/Timer";
-import store from "@/store";
-import { timerManager } from "@/services/TimerManager";
+import model from "@/model";
+import { timerController } from "@/services/TimerController";
 import router from "@/router";
 import { onBeforeUnmount, onMounted } from "vue";
 import ButtonPrimitive from "@/primitives/ButtonPrimitive.vue";
@@ -23,13 +23,13 @@ import { colors } from "@/themes/colors";
 import { fontSizes } from "@/themes/sizes";
 
 const mountTimer = () => {
-  timer.startTimer(store.state.settings.userSetTime, (time: string) => {
-    timerManager.updateTime(time);
+  timer.startTimer(model.state.settings.userSetTime, (time: string) => {
+    timerController.updateTime(time);
   });
 };
 const unmountTimer = () => {
   timer.stopTimer();
-  timerManager.updateTime("0");
+  timerController.updateTime("0");
 };
 const returnToMainPage = () => router.push("/");
 

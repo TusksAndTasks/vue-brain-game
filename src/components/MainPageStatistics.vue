@@ -8,8 +8,8 @@
     </TypographyPrimitive>
     <TypographyPrimitive elem="p" :size="fontSizes.SMALL">
       Ваш последний результат - решено
-      {{ store.state.statistics.lastRoundCorrectAnswers }} из
-      {{ store.state.statistics.lastRoundQuestions }}
+      {{ model.state.statistics.lastRoundCorrectAnswers }} из
+      {{ model.state.statistics.lastRoundQuestions }}
     </TypographyPrimitive>
     <TypographyPrimitive elem="p" :size="fontSizes.SMALL">
       Общая точность {{ correctRatio }}%
@@ -22,11 +22,11 @@ import { fontSizes } from "@/themes/sizes";
 
 import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
 import { computed, onMounted } from "vue";
-import store from "@/store";
+import model from "@/model";
 
 onMounted(() => {
-  if (!store.state.statistics.firstGameTimestamp) {
-    store.commit("updateStatisticsState", {
+  if (!model.state.statistics.firstGameTimestamp) {
+    model.commit("updateStatisticsState", {
       key: "firstGameTimestamp",
       value: Date.now(),
     });
@@ -35,14 +35,14 @@ onMounted(() => {
 
 const daysPassedFromFirstGame = computed(() => {
   const timePassed =
-    (Date.now() - store.state.statistics.firstGameTimestamp) / 86400000 + 1;
+    (Date.now() - model.state.statistics.firstGameTimestamp) / 86400000 + 1;
   return Math.trunc(timePassed);
 });
 
 const correctRatio = computed(() =>
   Math.round(
-    (store.state.statistics.totalCorrectAnswers * 100) /
-      store.state.statistics.totalQuestions
+    (model.state.statistics.totalCorrectAnswers * 100) /
+      model.state.statistics.totalQuestions
   )
 );
 </script>

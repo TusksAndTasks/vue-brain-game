@@ -2,7 +2,7 @@
   <div class="equation">
     <div class="left-part-equation">
       <div
-        v-for="field in store.state.game.currentFields"
+        v-for="field in model.state.game.currentFields"
         :key="field.id"
         class="equation-operand"
       >
@@ -18,14 +18,15 @@
         <GameFieldPrimitive
           v-else
           :input-value="field.inputValue"
-          :on-input="fieldsManager.changeInputValue"
-          :on-focus="fieldsManager.switchFocus"
+          :focused-id="model.state.game.focusedFieldId"
+          :on-input="gameFieldsController.changeFieldOnInput()"
+          :on-focus="gameFieldsController.focusOnClickedField()"
           :field-id="field.id"
         />
       </div>
     </div>
     <TypographyPrimitive :color="colors.GRAY" elem="p" :size="fontSizes.LARGE"
-      >={{ store.state.game.currentAnswer }}?</TypographyPrimitive
+      >={{ model.state.game.currentAnswer }}?</TypographyPrimitive
     >
   </div>
 </template>
@@ -34,8 +35,8 @@
 import { colors } from "@/themes/colors";
 import TypographyPrimitive from "@/primitives/TypographyPrimitive.vue";
 import GameFieldPrimitive from "@/primitives/GameFieldPrimitive.vue";
-import { fieldsManager } from "@/services/FieldManager";
-import store from "@/store";
+import { gameFieldsController } from "@/services/GameFieldsController";
+import model from "@/model";
 import { defineProps } from "vue";
 import { fontSizes } from "@/themes/sizes";
 
@@ -52,6 +53,7 @@ defineProps<{ isNumberDisplay: boolean }>();
 
 .equation-operand {
   width: 40px;
+  text-align: center;
 }
 
 .left-part-equation {

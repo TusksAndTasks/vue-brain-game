@@ -1,4 +1,4 @@
-export interface ITimeState {
+export interface ITimeModel {
   displayTime: string;
 }
 
@@ -7,7 +7,7 @@ export default {
     displayTime: "",
   },
   mutations: {
-    updateTimerState<STATE extends ITimeState, KEY extends keyof STATE>(
+    updateTimerState<STATE extends ITimeModel, KEY extends keyof STATE>(
       state: STATE,
       payload: { key: KEY; value: STATE[KEY] }
     ) {

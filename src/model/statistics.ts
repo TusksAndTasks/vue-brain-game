@@ -1,4 +1,4 @@
-export interface IStatisticsState {
+export interface IStatisticsModel {
   lastRoundQuestions: number;
   lastRoundCorrectAnswers: number;
   totalQuestions: number;
@@ -16,7 +16,7 @@ export default {
   },
   mutations: {
     updateStatisticsState<
-      STATE extends IStatisticsState,
+      STATE extends IStatisticsModel,
       KEY extends keyof STATE
     >(state: STATE, payload: { key: KEY; value: STATE[KEY] }) {
       state[payload.key] = payload.value;

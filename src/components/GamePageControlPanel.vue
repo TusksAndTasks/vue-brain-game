@@ -4,7 +4,7 @@
       <ButtonPrimitive
         v-for="(n, index) in 10"
         :key="n"
-        :callback="fieldsManager.fieldUpdater(index.toString())"
+        :callback="gameFieldsController.updateField(index.toString())"
         :color="{ primary: colors.RED, hover: colors.LIGHTRED }"
         :font-size="fontSizes.LARGE"
         class-name="round-button"
@@ -16,7 +16,11 @@
         :color="{ primary: colors.DARKGRAY, hover: colors.GRAY }"
         :font-size="fontSizes.LARGE"
         class-name="round-button"
-        :callback="focusOnNeighbor(store.state.game.focusedFieldId - 2)"
+        :callback="
+          gameFieldsController.focusOnNeighbor(
+            model.state.game.focusedFieldId - 2
+          )
+        "
       >
         &#60;
       </ButtonPrimitive>
@@ -24,7 +28,11 @@
         :color="{ primary: colors.DARKGRAY, hover: colors.GRAY }"
         :font-size="fontSizes.LARGE"
         class-name="round-button"
-        :callback="focusOnNeighbor(store.state.game.focusedFieldId + 2)"
+        :callback="
+          gameFieldsController.focusOnNeighbor(
+            model.state.game.focusedFieldId + 2
+          )
+        "
       >
         &#62;
       </ButtonPrimitive>
@@ -39,7 +47,7 @@
         :color="{ primary: colors.DARKGRAY, hover: colors.GRAY }"
         :font-size="fontSizes.LARGE"
         class-name="round-button"
-        :callback="gameDataGenerator.handleCheck(handleModalOpen)"
+        :callback="equationController.handleUserAnswerCheck(handleModalOpen)"
       >
         =
       </ButtonPrimitive>
@@ -49,13 +57,12 @@
 
 <script lang="ts" setup>
 import ButtonPrimitive from "@/primitives/ButtonPrimitive.vue";
-import { fieldsManager } from "@/services/FieldManager";
-import { focusOnNeighbor } from "@/utils/focusChangingUtils";
-import store from "@/store";
+import model from "@/model";
 import { defineProps } from "vue";
-import { gameDataGenerator } from "@/services/GameDataGenerator";
+import { equationController } from "@/services/EquationController";
 import { colors } from "@/themes/colors";
 import { fontSizes } from "@/themes/sizes";
+import { gameFieldsController } from "@/services/GameFieldsController";
 
 defineProps<{
   toggleNumbersDisplay: () => void;

@@ -12,13 +12,13 @@
 
 <script lang="ts" setup>
 import { computed, defineProps, withDefaults } from "vue";
-import store from "@/store";
 import { colors } from "@/themes/colors";
 
 const props = withDefaults(
   defineProps<{
     inputValue: string;
     fieldId: number;
+    focusedId: number;
     colors?: { primary: colors; focus: colors };
     maxlength?: number;
     onFocus: (eventElement: HTMLInputElement) => void;
@@ -36,9 +36,7 @@ const handleInput = getEventElement(props.onInput);
 const handleFocus = getEventElement(props.onFocus);
 
 const CSSProps = computed(() =>
-  store.state.game.focusedFieldId === props.fieldId
-    ? props.colors.focus
-    : props.colors.primary
+  props.focusedId === props.fieldId ? props.colors.focus : props.colors.primary
 );
 </script>
 

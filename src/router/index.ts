@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import GamePage from "@/views/GamePage.vue";
 import declareAvailableOperators from "@/utils/declareAvailableOperators";
-import store from "@/store";
+import model from "@/model";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,8 +24,8 @@ const router = createRouter({
 router.beforeEach((to) => {
   if (
     to.name === "game" &&
-    declareAvailableOperators(store.state.settings.flags).length < 2 &&
-    store.state.settings.difficulty > 3
+    declareAvailableOperators(model.state.settings.flags).length < 2 &&
+    model.state.settings.difficulty > 3
   ) {
     return { name: "main" };
   }

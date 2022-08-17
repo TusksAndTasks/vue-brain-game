@@ -1,7 +1,7 @@
-import { FlagsType } from "@/store/index";
-import { flagsEnum } from "@/engiene";
+import { FlagsType } from "@/model/index";
+import { flagsEnum } from "@/services/EquationGenerationController";
 
-export interface ISettingsState {
+export interface ISettingsModel {
   flags: FlagsType;
   difficulty: number;
   userSetTime: number;
@@ -20,7 +20,7 @@ export default {
     userSetTime: 10,
   },
   mutations: {
-    updateSettingsState<STATE extends ISettingsState, KEY extends keyof STATE>(
+    updateSettingsState<STATE extends ISettingsModel, KEY extends keyof STATE>(
       state: STATE,
       payload: { key: KEY; value: STATE[KEY] }
     ) {

@@ -1,36 +1,36 @@
-import store from "@/store";
+import model from "@/model";
 
 class StatisticsController {
   updateQuestionsCount() {
-    store.commit("updateStatisticsState", {
+    model.commit("updateStatisticsState", {
       key: "lastRoundQuestions",
-      value: store.state.statistics.lastRoundQuestions + 1,
+      value: model.state.statistics.lastRoundQuestions + 1,
     });
-    store.commit("updateStatisticsState", {
+    model.commit("updateStatisticsState", {
       key: "totalQuestions",
-      value: store.state.statistics.totalQuestions + 1,
+      value: model.state.statistics.totalQuestions + 1,
     });
   }
 
   updateCorrectAnswersCount(isCorrect: boolean) {
     if (isCorrect) {
-      store.commit("updateStatisticsState", {
+      model.commit("updateStatisticsState", {
         key: "lastRoundCorrectAnswers",
-        value: store.state.statistics.lastRoundCorrectAnswers + 1,
+        value: model.state.statistics.lastRoundCorrectAnswers + 1,
       });
-      store.commit("updateStatisticsState", {
+      model.commit("updateStatisticsState", {
         key: "totalCorrectAnswers",
-        value: store.state.statistics.totalCorrectAnswers + 1,
+        value: model.state.statistics.totalCorrectAnswers + 1,
       });
     }
   }
 
   resetLastRoundStatistics() {
-    store.commit("updateStatisticsState", {
+    model.commit("updateStatisticsState", {
       key: "lastRoundQuestions",
       value: 0,
     });
-    store.commit("updateStatisticsState", {
+    model.commit("updateStatisticsState", {
       key: "lastRoundCorrectAnswers",
       value: 0,
     });

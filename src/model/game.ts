@@ -1,7 +1,7 @@
-import { operatorsType } from "@/engiene";
-import { IGameField } from "@/store/index";
+import { operatorsType } from "@/services/EquationGenerationController";
+import { IGameField } from "@/model/index";
 
-export interface IGameState {
+export interface IGameModel {
   currentNumbers: Array<number>;
   currentOperators: Array<operatorsType>;
   currentAnswer: number;
@@ -20,7 +20,7 @@ export default {
     focusedFieldId: 2,
   },
   mutations: {
-    updateGameState<STATE extends IGameState, KEY extends keyof STATE>(
+    updateGameState<STATE extends IGameModel, KEY extends keyof STATE>(
       state: STATE,
       payload: { key: KEY; value: STATE[KEY] }
     ) {

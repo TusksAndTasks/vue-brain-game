@@ -1,4 +1,4 @@
-import { FlagsType } from "@/store";
+import { FlagsType } from "@/model";
 import declareAvailableOperators from "@/utils/declareAvailableOperators";
 
 export enum flagsEnum {
@@ -37,21 +37,24 @@ const functionsMap = {
     firstNum ** secondNum,
 };
 
-class Engine {
+class EquationGenerationController {
   constructor() {
     this.currentResult = 0;
     this.numbersCreatorsMap = {
       [operatorsMap[flagsEnum.SUM]]: ({ upperCap, lowerCap }: ICaps) =>
-        Engine.#generateRandomNumber(upperCap, lowerCap),
+        EquationGenerationController.#generateRandomNumber(upperCap, lowerCap),
       [operatorsMap[flagsEnum.SUBSTR]]: ({ upperCap, lowerCap }: ICaps) =>
-        Engine.#generateRandomNumber(upperCap, lowerCap),
+        EquationGenerationController.#generateRandomNumber(upperCap, lowerCap),
       [operatorsMap[flagsEnum.MUL]]: ({ upperCap, lowerCap }: ICaps) =>
-        Engine.#generateRandomNumber(upperCap, lowerCap),
+        EquationGenerationController.#generateRandomNumber(upperCap, lowerCap),
       [operatorsMap[flagsEnum.DIV]]: ({ upperCap, lowerCap }: ICaps) =>
         this.#generateDividableNumber(upperCap, lowerCap, this.currentResult),
       [operatorsMap[flagsEnum.POW]]: ({ upperCap, lowerCap }: ICaps) => {
         return this.currentResult < 1000000000
-          ? Engine.#generateRandomNumber(upperCap, lowerCap)
+          ? EquationGenerationController.#generateRandomNumber(
+              upperCap,
+              lowerCap
+            )
           : 0;
       },
     };
@@ -68,11 +71,54 @@ class Engine {
   numbersCreatorsMap: Record<string, (args: ICaps) => number>;
   numbersCapsMap: Record<string, ICaps>;
 
+  static #generateNotAPrimeNumber(upperCap: number, lowerCap: number) {
+    const number = EquationGenerationController.#generateRandomNumber(
+      upperCap,
+      lowerCap
+    );
+
+    return EquationGenerationController.#isPrime(number) ? number + 1 : number;
+  }
+
+  static #isPrime(num: number) {
+    for (let i = 2, s = Math.sqrt(num); i <= s; i++)
+      if (num % i === 0) return false;
+    return num > 1;
+  }
+
+  static #generateRandomNumber(upperCap: number, lowerCap = 0) {
+    return Math.floor(Math.random() * (upperCap - lowerCap) + lowerCap);
+  }
+
+  #generateDividableNumber(
+    upperCap: number,
+    lowerFloatingCap: number,
+    currentResult: number
+  ): number {
+    const lowerCap = EquationGenerationController.#generateRandomNumber(
+      lowerFloatingCap,
+      1
+    );
+    const number = EquationGenerationController.#generateRandomNumber(
+      upperCap,
+      lowerCap
+    );
+
+    if (currentResult % number === 0) {
+      return number;
+    }
+    return this.#generateDividableNumber(
+      upperCap,
+      lowerFloatingCap,
+      currentResult
+    );
+  }
+
   generateNumbers(amount: number, operators: Array<operatorsType>) {
     const startNumber =
       operators[0] === operatorsMap[flagsEnum.DIV]
-        ? Engine.#generateNotAPrimeNumber(100, 10)
-        : Engine.#generateRandomNumber(20, 1);
+        ? EquationGenerationController.#generateNotAPrimeNumber(100, 10)
+        : EquationGenerationController.#generateRandomNumber(20, 1);
     const numbersArray = [startNumber];
 
     this.currentResult = startNumber;
@@ -95,48 +141,15 @@ class Engine {
     return numbersArray;
   }
 
-  static #generateNotAPrimeNumber(upperCap: number, lowerCap: number) {
-    const number = Engine.#generateRandomNumber(upperCap, lowerCap);
-
-    return Engine.#isPrime(number) ? number + 1 : number;
-  }
-
-  static #isPrime(num: number) {
-    for (let i = 2, s = Math.sqrt(num); i <= s; i++)
-      if (num % i === 0) return false;
-    return num > 1;
-  }
-
-  static #generateRandomNumber(upperCap: number, lowerCap = 0) {
-    return Math.floor(Math.random() * (upperCap - lowerCap) + lowerCap);
-  }
-
-  #generateDividableNumber(
-    upperCap: number,
-    lowerFloatingCap: number,
-    currentResult: number
-  ): number {
-    const lowerCap = Engine.#generateRandomNumber(lowerFloatingCap, 1);
-    const number = Engine.#generateRandomNumber(upperCap, lowerCap);
-
-    if (currentResult % number === 0) {
-      return number;
-    }
-    return this.#generateDividableNumber(
-      upperCap,
-      lowerFloatingCap,
-      currentResult
-    );
-  }
-
   generateOperators(flags: FlagsType, amount: number) {
     const availableOperators = declareAvailableOperators(flags);
     const operatorsArray = [];
 
     for (let i = 0; i < amount; i++) {
-      const randomOperatorIndex = Engine.#generateRandomNumber(
-        availableOperators.length
-      );
+      const randomOperatorIndex =
+        EquationGenerationController.#generateRandomNumber(
+          availableOperators.length
+        );
       operatorsArray.push(availableOperators[randomOperatorIndex]);
     }
 
@@ -152,4 +165,4 @@ class Engine {
   }
 }
 
-export const engine = new Engine();
+export const equationGenerationController = new EquationGenerationController();

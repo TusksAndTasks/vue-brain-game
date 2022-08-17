@@ -4,14 +4,14 @@
 
 <script setup lang="ts">
 import { onBeforeMount, onMounted } from "vue";
-import store from "@/store";
+import model from "@/model";
 
 onBeforeMount(() => {
-  store.commit("retrieveLocalState", "statistics");
-  store.commit("retrieveLocalState", "settings");
+  model.commit("retrieveLocalState", "statistics");
+  model.commit("retrieveLocalState", "settings");
 });
 onMounted(() =>
-  store.subscribe((mutation, state) => {
+  model.subscribe((mutation, state) => {
     localStorage.setItem("statistics", JSON.stringify(state.statistics));
     localStorage.setItem("settings", JSON.stringify(state.settings));
   })

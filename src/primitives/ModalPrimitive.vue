@@ -38,6 +38,10 @@ function closeModal(e: Event) {
     width: 30%;
     height: 200px;
     background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
